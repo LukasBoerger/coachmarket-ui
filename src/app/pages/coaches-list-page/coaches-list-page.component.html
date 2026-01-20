@@ -1,0 +1,65 @@
+<h1>Coaches</h1>
+
+<form class="filters" [formGroup]="form">
+  <label>
+    Sport
+    <select formControlName="sportSlug">
+      <option value="">Alle</option>
+      <option *ngFor="let s of (sports$ | async)" [value]="s.slug">
+        {{ s.name }}
+      </option>
+    </select>
+  </label>
+
+  <label>
+    Spezialisierung
+    <select formControlName="specializationSlug">
+      <option value="">Alle</option>
+      <option *ngFor="let sp of (specializations$ | async)" [value]="sp.slug">
+        {{ sp.name }}
+      </option>
+    </select>
+  </label>
+
+  <label class="check">
+    <input type="checkbox" formControlName="remote" />
+    Remote
+  </label>
+
+  <label class="check">
+    <input type="checkbox" formControlName="inPerson" />
+    Vor Ort
+  </label>
+
+  <label>
+    Stadt
+    <input type="text" formControlName="city" placeholder="z.B. Münster" />
+  </label>
+
+  <label>
+    Preis max
+    <input type="number" formControlName="priceMax" />
+  </label>
+
+  <div class="actions">
+    <button type="button" (click)="search()">Suchen</button>
+    <button type="button" class="secondary" (click)="reset()">Reset</button>
+  </div>
+</form>
+
+<div class="list">
+  <a class="card" *ngFor="let c of (coaches$ | async)" [routerLink]="['/coaches', c.slug]">
+    <div class="title">{{ c.displayName }}</div>
+
+    <div class="meta">
+      <span *ngIf="c.city">{{ c.city }}</span>
+      <span *ngIf="c.remoteAvailable">• Remote</span>
+      <span *ngIf="c.inPersonAvailable">• Vor Ort</span>
+    </div>
+
+    <div class="price" *ngIf="c.priceMin !== null">
+      ab {{ c.priceMin }} {{ c.currency }}
+      <ng-container *ngIf="c.priceMax !== null">– {{ c.priceMax }} {{ c.currency }}</ng-container>
+    </div>
+  </a>
+</div>
