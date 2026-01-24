@@ -13,7 +13,7 @@ import { SpecializationsService } from '../../api/specializations.service';
   selector: 'app-coaches-list-page',
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './coaches-list-page.component.html',
-  styleUrl: './coaches-list-page.component.css',
+  styleUrl: './coaches-list-page.component.scss',
 })
 export class CoachesListPageComponent {
   private fb = inject(FormBuilder);

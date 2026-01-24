@@ -10,7 +10,7 @@ import { CoachesService } from '../../api/coaches.service';
   selector: 'app-coach-detail-page',
   imports: [CommonModule, RouterModule],
   templateUrl: './coach-detail-page.component.html',
-  styleUrl: './coach-detail-page.component.css',
+  styleUrl: './coach-detail-page.component.scss',
 })
 export class CoachDetailPageComponent {
   private route = inject(ActivatedRoute);
