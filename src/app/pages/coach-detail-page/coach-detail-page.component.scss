@@ -15,3 +15,33 @@
   margin: 12px 0;
   font-weight: 600;
 }
+
+.header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.avatar-xl {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+.gallery {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.thumb {
+  width: 110px;
+  height: 80px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}

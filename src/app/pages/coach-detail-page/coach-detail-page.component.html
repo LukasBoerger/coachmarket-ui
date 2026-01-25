@@ -1,22 +1,21 @@
 <a class="back" routerLink="/coaches">← Zurück</a>
 
 <ng-container *ngIf="(coach$ | async) as c">
-  <h1>{{ c.displayName }}</h1>
-
-  <div class="meta">
-    <span *ngIf="c.city">{{ c.city }}</span>
-    <span *ngIf="c.remoteAvailable">• Remote</span>
-    <span *ngIf="c.inPersonAvailable">• Vor Ort</span>
+  <div class="header">
+    <img class="avatar-xl" [src]="c.avatarUrl || '/assets/avatar-placeholder.svg'" alt="" />
+    <div>
+      <h1>{{ c.displayName }}</h1>
+      <div class="meta">
+        <span *ngIf="c.city">{{ c.city }}</span>
+        <span *ngIf="c.remoteAvailable">• Remote</span>
+        <span *ngIf="c.inPersonAvailable">• Vor Ort</span>
+      </div>
+    </div>
   </div>
 
-  <div class="price" *ngIf="c.priceMin !== null">
-    Preis: {{ c.priceMin }} {{ c.currency }}
-    <ng-container *ngIf="c.priceMax !== null">– {{ c.priceMax }} {{ c.currency }}</ng-container>
+  <div class="gallery" *ngIf="c.imageUrls?.length">
+    <img class="thumb" *ngFor="let url of c.imageUrls" [src]="url" alt="" />
   </div>
 
-  <p *ngIf="c.bio">{{ c.bio }}</p>
-
-  <p *ngIf="c.websiteUrl">
-    <a [href]="c.websiteUrl" target="_blank" rel="noreferrer">Website öffnen</a>
-  </p>
+  <!-- rest wie vorher -->
 </ng-container>

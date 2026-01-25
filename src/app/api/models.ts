@@ -23,4 +23,6 @@ export type CoachDto = {
   priceMax: number | null;
   currency: string;
   status: string;
+  avatarUrl?: string | null;
+  imageUrls?: string[];
 };
