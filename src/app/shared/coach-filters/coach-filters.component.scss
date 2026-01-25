@@ -1,0 +1,197 @@
+.filter-card {
+  margin-top: 12px;
+  margin-bottom: 32px;
+  padding: 20px 24px 18px;
+  border-radius: 24px;
+  background: #f9fbff;
+  border: 1px solid #e0e7ff;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+}
+
+/* OBERER BLOCK */
+
+.filter-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+}
+
+.field-query {
+  flex: 1 1 260px;
+}
+
+.field-sort {
+  width: 180px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* Suche */
+
+.query-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.query-input input {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  font-size: 14px;
+  background: transparent;
+}
+
+.query-input input::placeholder {
+  color: #9ca3af;
+}
+
+.query-input:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+/* Selects & Number */
+
+select,
+.number-input {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  padding: 9px 14px;
+  font-size: 14px;
+  outline: none;
+  background: #ffffff;
+}
+
+select:focus,
+.number-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+/* Finden-Button */
+
+.primary-btn {
+  border: 0;
+  outline: 0;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.45);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  white-space: nowrap;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.55);
+}
+
+/* UNTERER BLOCK */
+
+.filter-bottom {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.field-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.field-distance input[type='range'] {
+  width: 150px;
+}
+
+.sub-value {
+  font-size: 12px;
+  color: #111827;
+  min-width: 50px;
+}
+
+/* Checkbox-Styles kannst du behalten oder leicht anpassen */
+
+.chk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.chk input {
+  width: 16px;
+  height: 16px;
+}
+
+/* Reset-Link */
+
+.link-reset {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.link-reset:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .filter-top {
+    align-items: stretch;
+  }
+
+  .field-sort {
+    flex: 1 1 160px;
+    width: auto;
+  }
+
+  .primary-btn {
+    width: 100%;
+    justify-content: center;
+    order: 99; /* Button nach unten in der Top-Reihe */
+  }
+
+  .filter-bottom {
+    align-items: flex-start;
+  }
+
+  .link-reset {
+    margin-left: 0;
+  }
+}

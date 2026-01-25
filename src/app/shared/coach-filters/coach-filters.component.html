@@ -1,0 +1,123 @@
+<div class="filter-card">
+  <!-- OBERE REIHE -->
+  <div class="filter-top">
+    <!-- Suche -->
+    <div class="field field-query">
+      <label class="field-label">Suche</label>
+      <div class="query-input">
+        <span class="icon">🔎</span>
+        <input
+          type="text"
+          placeholder="Was suchst du? (z.B. Coach, Stadt)"
+          [value]="form.controls.city.value"
+          (input)="form.controls.city.setValue($any($event.target).value)"
+        />
+      </div>
+    </div>
+
+    <!-- Sportart -->
+    <div class="field">
+      <label class="field-label">Sportart</label>
+      <select
+        [value]="form.controls.sportSlug.value ?? ''"
+        (change)="form.controls.sportSlug.setValue(($any($event.target).value || null))"
+      >
+        <option value="">Alle Sportarten</option>
+        <option *ngFor="let s of sports" [value]="s.value">{{ s.label }}</option>
+      </select>
+    </div>
+
+    <!-- Ziel -->
+    <div class="field">
+      <label class="field-label">Ziel</label>
+      <select
+        [value]="form.controls.specializationSlug.value ?? ''"
+        (change)="form.controls.specializationSlug.setValue(($any($event.target).value || null))"
+      >
+        <option value="">Alle Ziele</option>
+        <option *ngFor="let sp of specializations" [value]="sp.value">{{ sp.label }}</option>
+      </select>
+    </div>
+
+    <!-- Sortierung -->
+    <div class="field field-sort">
+      <label class="field-label">Sortierung</label>
+      <select
+        [value]="form.controls.sort.value"
+        (change)="form.controls.sort.setValue($any($event.target).value)"
+      >
+        <option value="relevance">Relevanz</option>
+        <option value="priceAsc">Preis ↑</option>
+        <option value="priceDesc">Preis ↓</option>
+        <option value="nameAsc">Name A–Z</option>
+      </select>
+    </div>
+
+    <!-- CTA -->
+    <button class="primary-btn" type="button" (click)="onSearch()">
+      Finden
+    </button>
+  </div>
+
+  <!-- UNTERE REIHE -->
+  <div class="filter-bottom">
+    <!-- Remote / Vor Ort -->
+    <div class="field-inline">
+      <span class="field-label">Format</span>
+
+      <label class="chk">
+        <input
+          type="checkbox"
+          [checked]="form.controls.remote.value"
+          (change)="form.controls.remote.setValue($any($event.target).checked)"
+        />
+        <span>Remote</span>
+      </label>
+
+      <label class="chk">
+        <input
+          type="checkbox"
+          [checked]="form.controls.inPerson.value"
+          (change)="form.controls.inPerson.setValue($any($event.target).checked)"
+        />
+        <span>Vor Ort</span>
+      </label>
+    </div>
+
+    <!-- Preis max -->
+    <div class="field-inline">
+      <span class="field-label">Preis max</span>
+      <input
+        type="number"
+        min="0"
+        [value]="form.controls.maxPrice.value ?? ''"
+        (input)="form.controls.maxPrice.setValue(($any($event.target).value ? +$any($event.target).value : null))"
+        placeholder="€"
+        class="number-input"
+      />
+    </div>
+
+    <!-- Umkreis -->
+    <div class="field-inline field-distance">
+      <span class="field-label">Umkreis</span>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        step="5"
+        [value]="form.controls.distanceKm.value ?? 0"
+        (input)="form.controls.distanceKm.setValue(
+          $any($event.target).valueAsNumber === 0
+            ? null
+            : $any($event.target).valueAsNumber
+        )"
+      />
+      <span class="sub-value">
+        {{ form.controls.distanceKm.value ?? '—' }} km
+      </span>
+    </div>
+
+    <!-- Reset -->
+    <button class="link-reset" type="button" (click)="onReset()">Reset</button>
+  </div>
+</div>

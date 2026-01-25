@@ -1,0 +1,40 @@
+<mat-toolbar color="primary" class="nav-toolbar">
+  <span class="logo">CoachMarktplatz</span>
+
+  <span class="spacer"></span>
+
+  <!-- Desktop Navigation -->
+  <ng-container *ngFor="let item of navItems">
+    <!-- Normaler Link -->
+    <button
+      *ngIf="!item.children"
+      mat-button
+      [routerLink]="item.route"
+      routerLinkActive="active-link"
+    >
+      <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+      {{ item.label }}
+    </button>
+
+    <!-- Dropdown -->
+    <button
+      *ngIf="item.children"
+      mat-button
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+      {{ item.label }}
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button
+        mat-menu-item
+        *ngFor="let child of item.children"
+        [routerLink]="child.route"
+      >
+        <mat-icon *ngIf="child.icon">{{ child.icon }}</mat-icon>
+        {{ child.label }}
+      </button>
+    </mat-menu>
+  </ng-container>
+</mat-toolbar>
