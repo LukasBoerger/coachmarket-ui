@@ -1,21 +1,150 @@
-<a class="back" routerLink="/coaches">← Zurück</a>
+<div class="coach-page" *ngIf="!isLoading && coach as c">
+  <!-- HERO -->
+  <section class="coach-hero">
+    <div class="hero-left">
+      <div class="avatar" [ngClass]="{ 'avatar-placeholder': !c.avatarUrl }">
+        <img *ngIf="c.avatarUrl" [src]="c.avatarUrl" [alt]="c.name"/>
+        <span *ngIf="!c.avatarUrl">{{ c.name[0] }}</span>
+      </div>
 
-<ng-container *ngIf="(coach$ | async) as c">
-  <div class="header">
-    <img class="avatar-xl" [src]="c.avatarUrl || '/assets/avatar-placeholder.svg'" alt="" />
-    <div>
-      <h1>{{ c.displayName }}</h1>
-      <div class="meta">
-        <span *ngIf="c.city">{{ c.city }}</span>
-        <span *ngIf="c.remoteAvailable">• Remote</span>
-        <span *ngIf="c.inPersonAvailable">• Vor Ort</span>
+      <div class="hero-text">
+        <h1 class="coach-name">{{ c.name }}</h1>
+
+        <div class="coach-meta">
+          <span class="meta-pill location">
+            📍 {{ c.city }}
+          </span>
+
+          <span class="meta-pill" *ngIf="c.remoteAvailable">Remote</span>
+          <span class="meta-pill" *ngIf="c.inPersonAvailable">Vor Ort</span>
+        </div>
+
+        <p class="coach-tagline" *ngIf="c.tagline">
+          {{ c.tagline }}
+        </p>
+
+        <div class="coach-tags">
+          <span class="tag tag-main" *ngFor="let sport of c.sports">{{ sport }}</span>
+          <span class="tag tag-secondary" *ngFor="let spec of c.specializations">
+            {{ spec }}
+          </span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="gallery" *ngIf="c.imageUrls?.length">
-    <img class="thumb" *ngFor="let url of c.imageUrls" [src]="url" alt="" />
-  </div>
+    <div class="hero-right">
+      <div class="price-block" *ngIf="c.priceFrom">
+        <div class="price-line">
+          <span class="price-amount">{{ c.priceFrom }} €</span>
+          <span class="price-unit" *ngIf="c.priceUnit">&nbsp;{{ c.priceUnit }}</span>
+        </div>
+        <div class="price-sub" *ngIf="c.freeIntro">
+          🎁 Kostenloses Kennenlern-Gespräch (direkt mit dem Coach)
+        </div>
+      </div>
 
-  <!-- rest wie vorher -->
-</ng-container>
+      <!-- 🔽 externer Kontakt-Link, keine Plattform-Funktion -->
+      <a
+        *ngIf="c.primaryContactUrl"
+        class="primary-btn"
+        [href]="c.primaryContactUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ c.primaryContactLabel || 'Coach kontaktieren' }}
+      </a>
+
+      <div class="hero-note">
+        Anfragen, Verträge & Zahlungen laufen direkt zwischen dir und dem Coach.
+      </div>
+    </div>
+
+  </section>
+
+  <!-- CONTENT LAYOUT -->
+  <section class="coach-layout">
+    <main class="coach-main">
+      <!-- Über mich -->
+      <section class="card">
+        <h2>Über {{ c.name.split(' ')[0] || 'mich' }}</h2>
+        <p class="card-text" *ngIf="c.description">
+          {{ c.description }}
+        </p>
+
+        <div class="pill-row" *ngIf="c.focusAreas?.length">
+          <h3>Fokus</h3>
+          <div class="pills">
+            <span class="pill" *ngFor="let f of c.focusAreas">{{ f }}</span>
+          </div>
+        </div>
+
+        <div class="pill-row" *ngIf="c.methods?.length">
+          <h3>So arbeite ich</h3>
+          <ul class="list">
+            <li *ngFor="let m of c.methods">{{ m }}</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Inhalte des Coachings -->
+      <section class="card">
+        <h2>Was du von mir bekommst</h2>
+        <ul class="list check-list">
+          <li>Individueller Trainingsplan passend zu deinem Alltag</li>
+          <li>Strukturierte Progression & Leistungs-Tracking</li>
+          <li>Fokus auf Regeneration statt Hustle-Burnout</li>
+          <li *ngIf="c.remoteAvailable">Online-Check-ins & Feedback per App/Video</li>
+          <li *ngIf="c.inPersonAvailable">Optionale Vor-Ort-Sessions in {{ c.city }}</li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">Kontakt</div>
+
+      <!-- Hauptkontakt -->
+      <a
+        *ngIf="c.primaryContactUrl"
+        class="primary-btn primary-btn-full"
+        [href]="c.primaryContactUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ c.primaryContactLabel || 'Coach kontaktieren' }}
+      </a>
+
+      <!-- Weitere Links, wenn vorhanden -->
+      <div class="sidebar-links" *ngIf="c.otherContacts?.length">
+        <a
+          *ngFor="let oc of c.otherContacts"
+          class="sidebar-link"
+          [href]="oc.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ oc.label }}
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-section" *ngIf="c.pricingNote">
+      <div class="sidebar-hint">
+        {{ c.pricingNote }}
+      </div>
+    </div>
+
+    <div class="sidebar-section" *ngIf="c.supportNote">
+      <div class="sidebar-hint">
+        {{ c.supportNote }}
+        <a *ngIf="c.supportUrl" [href]="c.supportUrl" target="_blank" rel="noopener noreferrer">
+          Mehr erfahren
+        </a>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<div *ngIf="isLoading" class="state-msg">Lade Coach…</div>
+<div *ngIf="!isLoading && error" class="state-msg state-error">{{ error }}</div>
