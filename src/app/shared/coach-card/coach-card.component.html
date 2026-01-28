@@ -1,0 +1,67 @@
+<a
+  class="coach-card"
+  [routerLink]="['/coaches', coach.slug]"
+>
+  <!-- TOP: Avatar + Name + Location + Format -->
+  <div class="card-top">
+    <div class="avatar" [ngClass]="{ 'avatar-placeholder': !coach.avatarUrl }">
+      <img *ngIf="coach.avatarUrl" [src]="coach.avatarUrl" [alt]="coach.name"/>
+      <span *ngIf="!coach.avatarUrl">
+        {{ coach.name ? coach.name[0] : '?' }}
+      </span>
+    </div>
+
+    <div class="top-main">
+      <div class="name-row">
+        <h2 class="name">{{ coach.name }}</h2>
+      </div>
+
+      <div class="meta-row">
+        <span class="pill pill-location">📍 {{ coach.city }}</span>
+
+        <span class="pill" *ngIf="coach.remoteAvailable">Remote</span>
+        <span class="pill" *ngIf="coach.inPersonAvailable">Vor Ort</span>
+      </div>
+
+      <p class="tagline" *ngIf="coach.tagline">
+        {{ coach.tagline }}
+      </p>
+    </div>
+  </div>
+
+  <!-- MIDDLE: Tags (Sport + Spezialisierung) -->
+  <div class="card-tags" *ngIf="coach.sports?.length || coach.specializations?.length">
+    <span class="tag tag-main" *ngFor="let sport of coach.sports | slice:0:2">
+      {{ sport }}
+    </span>
+    <span class="tag tag-secondary" *ngFor="let spec of coach.specializations | slice:0:2">
+      {{ spec }}
+    </span>
+
+    <span
+      class="tag tag-more"
+      *ngIf="(coach.sports.length + coach.specializations.length) > 4"
+    >
+      + weitere
+    </span>
+  </div>
+
+  <!-- BOTTOM: Preis + CTA -->
+  <div class="card-bottom">
+    <div class="price-block" *ngIf="coach.priceFrom">
+      <div class="price-line">
+        <span class="price-amount">{{ coach.priceFrom }} €</span>
+        <span class="price-unit" *ngIf="coach.priceUnit">&nbsp;{{ coach.priceUnit }}</span>
+      </div>
+      <div class="price-sub">
+        ab Preis (direkt beim Coach)
+      </div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+
+    <span class="cta-link">
+      Profil ansehen
+    </span>
+  </div>
+</a>

@@ -3,38 +3,84 @@
 
   <span class="spacer"></span>
 
-  <!-- Desktop Navigation -->
+  <!-- DESKTOP NAVIGATION -->
+  <div class="desktop-nav">
+    <ng-container *ngFor="let item of navItems">
+      <!-- Normaler Link -->
+      <button
+        *ngIf="!item.children"
+        mat-button
+        [routerLink]="item.route"
+        routerLinkActive="active-link"
+      >
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </button>
+
+      <!-- Dropdown -->
+      <button
+        *ngIf="item.children"
+        mat-button
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let child of item.children"
+          [routerLink]="child.route"
+        >
+          <mat-icon *ngIf="child.icon">{{ child.icon }}</mat-icon>
+          {{ child.label }}
+        </button>
+      </mat-menu>
+    </ng-container>
+  </div>
+
+  <!-- MOBILE BURGER BUTTON -->
+  <button
+    class="mobile-menu-button"
+    mat-icon-button
+    [matMenuTriggerFor]="mobileMenu"
+    aria-label="Navigation öffnen"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!-- MOBILE MENU-INHALT -->
+<mat-menu #mobileMenu="matMenu">
   <ng-container *ngFor="let item of navItems">
-    <!-- Normaler Link -->
+    <!-- einfache Links -->
     <button
+      mat-menu-item
       *ngIf="!item.children"
-      mat-button
       [routerLink]="item.route"
-      routerLinkActive="active-link"
     >
       <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-      {{ item.label }}
+      <span>{{ item.label }}</span>
     </button>
 
-    <!-- Dropdown -->
-    <button
-      *ngIf="item.children"
-      mat-button
-      [matMenuTriggerFor]="menu"
-    >
-      <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-      {{ item.label }}
-    </button>
+    <!-- Gruppen mit Kindern -->
+    <ng-container *ngIf="item.children">
+      <button mat-menu-item disabled>
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </button>
 
-    <mat-menu #menu="matMenu">
       <button
         mat-menu-item
         *ngFor="let child of item.children"
         [routerLink]="child.route"
       >
-        <mat-icon *ngIf="child.icon">{{ child.icon }}</mat-icon>
-        {{ child.label }}
+        <span class="child-dot">•</span>
+        <span>{{ child.label }}</span>
       </button>
-    </mat-menu>
+
+      <mat-divider></mat-divider>
+    </ng-container>
   </ng-container>
-</mat-toolbar>
+</mat-menu>

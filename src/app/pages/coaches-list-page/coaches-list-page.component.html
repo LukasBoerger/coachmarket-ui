@@ -19,31 +19,9 @@
 
 <div class="list">
   <div class="coach-grid">
-    <a
-      class="coach-tile"
-      *ngFor="let c of (coaches$ | async)"
-      [routerLink]="['/coaches', c.slug]"
-    >
-      <div class="thumb">
-        <img [src]="c.avatarUrl || '/assets/avatar-placeholder.svg'" alt="" />
-      </div>
-
-      <div class="info">
-        <div class="title">{{ c.displayName }}</div>
-
-        <div class="meta">
-          <span *ngIf="c.city">{{ c.city }}</span>
-          <span *ngIf="c.remoteAvailable">• Remote</span>
-          <span *ngIf="c.inPersonAvailable">• Vor Ort</span>
-        </div>
-
-        <div class="price" *ngIf="c.priceMin !== null">
-          ab {{ c.priceMin }} {{ c.currency }}
-          <ng-container *ngIf="c.priceMax !== null">– {{ c.priceMax }} {{ c.currency }}</ng-container>
-        </div>
-      </div>
-    </a>
+    <app-coach-card
+      *ngFor="let c of (coaches$ | async) ?? []"
+      [coach]="c"
+    ></app-coach-card>
   </div>
-
-
 </div>

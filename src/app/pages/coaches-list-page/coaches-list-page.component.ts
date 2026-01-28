@@ -1,23 +1,29 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { combineLatest, map, startWith, switchMap, shareReplay } from 'rxjs';
+import {CommonModule} from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
+import {combineLatest, map, shareReplay, startWith, switchMap} from 'rxjs';
 
-import { CoachesService } from '../../api/coaches.service';
-import { SportsService } from '../../api/sports.service';
-import { SpecializationsService } from '../../api/specializations.service';
-import { CoachFiltersComponent } from '../../shared/coach-filters/coach-filters.component';
+import {CoachesService} from '../../api/coaches.service';
+import {SportsService} from '../../api/sports.service';
+import {SpecializationsService} from '../../api/specializations.service';
+import {CoachFiltersComponent} from '../../shared/coach-filters/coach-filters.component';
 
-// Falls du das Model nutzt (empfohlen):
-// import { CoachFilters } from '../../shared/coach-filters/coach-filters.model';
+import {CoachCardComponent} from '../../shared/coach-card/coach-card.component';
+import {CoachCardVm} from '../../shared/coach-card/coach-card.model';
 
 type Option = { label: string; value: string };
 
 @Component({
   standalone: true,
   selector: 'app-coaches-list-page',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, CoachFiltersComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    CoachFiltersComponent,
+    CoachCardComponent,
+  ],
   templateUrl: './coaches-list-page.component.html',
   styleUrl: './coaches-list-page.component.scss',
 })
@@ -33,14 +39,14 @@ export class CoachesListPageComponent {
 
   // Optionen für Filter-Component
   sportOptions$ = this.sports$.pipe(
-    map((sports) => sports.map((s: any) => ({ label: s.name, value: s.slug }) as Option))
+    map((sports) => sports.map((s: any) => ({label: s.name, value: s.slug}) as Option))
   );
 
   specializationOptions$ = this.specializations$.pipe(
-    map((specs) => specs.map((sp: any) => ({ label: sp.name, value: sp.slug }) as Option))
+    map((specs) => specs.map((sp: any) => ({label: sp.name, value: sp.slug}) as Option))
   );
 
-  // Page-Form bleibt als "Single Source of Truth"
+  // Page-Form bleibt Single Source of Truth
   form = this.fb.group({
     sportSlug: [''],
     specializationSlug: [''],
@@ -48,14 +54,13 @@ export class CoachesListPageComponent {
     inPerson: [false],
     city: [''],
     priceMax: [null as number | null],
-
-    // Optional schon vorbereiten, falls du es im Filter-UI einbaust:
     distanceKm: [null as number | null],
     sort: ['relevance' as 'relevance' | 'priceAsc' | 'priceDesc' | 'nameAsc'],
   });
 
   private refreshTick = this.fb.control(0);
 
+  // 👉 jetzt Observable von CoachCardVm[]
   coaches$ = combineLatest([
     this.form.valueChanges.pipe(startWith(this.form.getRawValue())),
     this.refreshTick.valueChanges.pipe(startWith(0)),
@@ -68,12 +73,10 @@ export class CoachesListPageComponent {
         inPerson: value.inPerson ? true : null,
         city: value.city?.trim() || null,
         priceMax: value.priceMax ?? null,
-
         // distanceKm / sort kannst du ans Backend hängen, sobald es unterstützt wird
-        // distanceKm: value.distanceKm ?? null,
-        // sort: value.sort ?? null,
       })
-    )
+    ),
+    map((dtos: any[]) => dtos.map((dto) => this.mapToCoachCardVm(dto)))
   );
 
   // ✅ Wird von der Filter-Component aufgerufen
@@ -83,7 +86,7 @@ export class CoachesListPageComponent {
     remote: boolean;
     inPerson: boolean;
     city: string;
-    maxPrice: number | null;     // aus Filter-Component
+    maxPrice: number | null;
     distanceKm: number | null;
     sort: 'relevance' | 'priceAsc' | 'priceDesc' | 'nameAsc';
   }) {
@@ -118,5 +121,30 @@ export class CoachesListPageComponent {
 
   search() {
     this.refreshTick.setValue((this.refreshTick.value ?? 0) + 1);
+  }
+
+  // 🔁 Mapping Backend → Card-ViewModel
+  private mapToCoachCardVm(dto: any): CoachCardVm {
+    return {
+      slug: dto.slug,
+
+      name: dto.displayName ?? dto.name ?? '',
+      city: dto.city ?? '',
+      tagline: dto.tagline ?? dto.shortDescription ?? '',
+
+      avatarUrl: dto.avatarUrl ?? null,
+
+      sports: dto.sports ?? [],
+      specializations: dto.specializations ?? [],
+
+      remoteAvailable: !!dto.remoteAvailable,
+      inPersonAvailable: !!dto.inPersonAvailable,
+
+      priceFrom:
+        dto.priceMin !== null && dto.priceMin !== undefined
+          ? dto.priceMin
+          : undefined,
+      priceUnit: dto.currency ?? undefined,
+    };
   }
 }

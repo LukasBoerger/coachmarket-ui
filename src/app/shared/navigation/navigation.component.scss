@@ -1,6 +1,8 @@
 .nav-toolbar {
   display: flex;
+  align-items: center;
   gap: 8px;
+  padding-inline: 16px;
 }
 
 .logo {
@@ -12,6 +14,38 @@
   flex: 1 1 auto;
 }
 
+/* Desktop-Links */
+.desktop-nav {
+  display: flex;
+  gap: 4px;
+}
+
+/* Mobile-Burger erstmal verstecken */
+.mobile-menu-button {
+  display: none;
+}
+
 .active-link {
   background: rgba(255, 255, 255, 0.15);
+}
+
+/* Optional: Kind-Punkt im Mobile-Menü leicht einrücken */
+.child-dot {
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+/* BREAKPOINT: unter ~900px auf Burger umschalten */
+@media (max-width: 900px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: inline-flex;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
 }
