@@ -2,66 +2,71 @@
   class="coach-card"
   [routerLink]="['/coaches', coach.slug]"
 >
-  <!-- TOP: Avatar + Name + Location + Format -->
-  <div class="card-top">
-    <div class="avatar" [ngClass]="{ 'avatar-placeholder': !coach.avatarUrl }">
-      <img *ngIf="coach.avatarUrl" [src]="coach.avatarUrl" [alt]="coach.name"/>
-      <span *ngIf="!coach.avatarUrl">
-        {{ coach.name ? coach.name[0] : '?' }}
-      </span>
+  <div class="card-layout">
+    <!-- Avatar -->
+    <div class="avatar-wrapper">
+      <div class="avatar" [ngClass]="{ 'avatar-placeholder': !coach.avatarUrl }">
+        <img *ngIf="coach.avatarUrl" [src]="coach.avatarUrl" [alt]="coach.name"/>
+        <span *ngIf="!coach.avatarUrl">
+          {{ coach.name ? coach.name[0] : '?' }}
+        </span>
+      </div>
     </div>
 
-    <div class="top-main">
-      <div class="name-row">
-        <h2 class="name">{{ coach.name }}</h2>
+    <!-- Content -->
+    <div class="card-content">
+      <!-- Header: Name + Ort + Format + Preis -->
+      <div class="card-header">
+        <div class="title-block">
+          <div class="name">{{ coach.name }}</div>
+
+          <div class="meta-row">
+            <span
+              class="pill pill-location"
+              *ngIf="coach.city"
+            >
+              📍 {{ coach.city }}
+            </span>
+
+            <span class="pill" *ngIf="coach.remoteAvailable">Remote</span>
+            <span class="pill" *ngIf="coach.inPersonAvailable">Vor Ort</span>
+          </div>
+        </div>
+
+        <div class="price-block" *ngIf="coach.priceFrom">
+          <div class="price-main">{{ coach.priceFrom }} €</div>
+          <div class="price-sub">
+            ab Preis
+            <ng-container *ngIf="coach.priceUnit; else direct">
+              ({{ coach.priceUnit }})
+            </ng-container>
+            <ng-template #direct>
+              (direkt beim Coach)
+            </ng-template>
+          </div>
+        </div>
       </div>
 
-      <div class="meta-row">
-        <span class="pill pill-location">📍 {{ coach.city }}</span>
-
-        <span class="pill" *ngIf="coach.remoteAvailable">Remote</span>
-        <span class="pill" *ngIf="coach.inPersonAvailable">Vor Ort</span>
-      </div>
-
+      <!-- Tagline -->
       <p class="tagline" *ngIf="coach.tagline">
         {{ coach.tagline }}
       </p>
-    </div>
-  </div>
 
-  <!-- MIDDLE: Tags (Sport + Spezialisierung) -->
-  <div class="card-tags" *ngIf="coach.sports?.length || coach.specializations?.length">
-    <span class="tag tag-main" *ngFor="let sport of coach.sports | slice:0:2">
-      {{ sport }}
-    </span>
-    <span class="tag tag-secondary" *ngFor="let spec of coach.specializations | slice:0:2">
-      {{ spec }}
-    </span>
+      <!-- Footer: Tags + CTA -->
+      <div class="card-footer">
+        <div class="tags" *ngIf="coach.sports?.length || coach.specializations?.length">
+          <span class="tag tag-main" *ngFor="let sport of coach.sports | slice:0:1">
+            {{ sport }}
+          </span>
+          <span class="tag tag-secondary" *ngFor="let spec of coach.specializations | slice:0:2">
+            {{ spec }}
+          </span>
+        </div>
 
-    <span
-      class="tag tag-more"
-      *ngIf="(coach.sports.length + coach.specializations.length) > 4"
-    >
-      + weitere
-    </span>
-  </div>
-
-  <!-- BOTTOM: Preis + CTA -->
-  <div class="card-bottom">
-    <div class="price-block" *ngIf="coach.priceFrom">
-      <div class="price-line">
-        <span class="price-amount">{{ coach.priceFrom }} €</span>
-        <span class="price-unit" *ngIf="coach.priceUnit">&nbsp;{{ coach.priceUnit }}</span>
-      </div>
-      <div class="price-sub">
-        ab Preis (direkt beim Coach)
+        <span class="cta-link">
+          Profil ansehen
+        </span>
       </div>
     </div>
-
-    <div class="bottom-spacer"></div>
-
-    <span class="cta-link">
-      Profil ansehen
-    </span>
   </div>
 </a>

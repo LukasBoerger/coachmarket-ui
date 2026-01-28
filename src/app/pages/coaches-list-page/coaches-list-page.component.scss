@@ -1,148 +1,65 @@
+/* Abstand unter der Überschrift */
 .list {
   margin-top: 28px;
 }
 
+/* Layout: Filter-Sidebar + Ergebnisliste */
+.coaches-layout {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* linke Spalte (Filter) */
+.filters-column {
+  position: sticky;
+  top: 88px; // ggf. an deine Toolbar-Höhe anpassen
+}
+
+/* rechte Spalte (Grid-Bereich) */
+.results-column {
+  min-width: 0;
+  padding-top: 4px; // oder 8px, ganz subtil
+}
+
+/* Coach-Karten-Grid */
 .coach-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); // größere Karten
   gap: 20px;
 }
 
-/* Karte */
+/* Mobile: Sidebar nach oben, alles einspaltig */
+@media (max-width: 900px) {
+  .coaches-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-.coach-tile {
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-  text-decoration: none;
-  color: inherit;
-  transition: transform 120ms ease,
-  box-shadow 120ms ease,
-  border-color 120ms ease;
+  .filters-column {
+    position: static;
+  }
 }
 
-.coach-tile:hover {
-  transform: translateY(-2px);
-  border-color: #c7d2fe;
-  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.18);
+/* No-Results-State */
+.no-results {
+  margin-top: 24px;
+  padding: 24px 20px;
+  border-radius: 16px;
+  border: 1px dashed #e5e7eb;
+  background: #f9fafb;
+  text-align: center;
 }
 
-/* Bild oben */
-
-.tile-media {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-}
-
-.tile-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Body */
-
-.tile-body {
-  padding: 12px 14px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.tile-header {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.name-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 6px;
-}
-
-.name {
-  font-size: 15px;
+.no-results-title {
   font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
 }
 
-.city {
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.format-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.pill {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #f3f4f6;
-}
-
-.tagline {
+.no-results-text {
   margin: 0;
   font-size: 13px;
-  color: #4b5563;
-}
-
-/* Footer */
-
-.tile-footer {
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.price {
-  font-size: 13px;
-  color: #111827;
-}
-
-.price-label {
-  font-weight: 500;
-  margin-right: 2px;
-}
-
-.price-value {
-  font-weight: 600;
-}
-
-.price-sep {
-  margin: 0 2px;
-}
-
-.price-on-request {
   color: #6b7280;
-  font-style: italic;
-}
-
-.cta {
-  margin-left: auto;
-  font-size: 13px;
-  color: #2563eb;
-  font-weight: 500;
-}
-
-/* Mobile */
-
-@media (max-width: 640px) {
-  .coach-grid {
-    gap: 16px;
-  }
-
-  .tile-body {
-    padding: 10px 12px 12px;
-  }
 }

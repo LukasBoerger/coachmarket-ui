@@ -1,77 +1,39 @@
-.filter-card {
-  margin-top: 12px;
-  margin-bottom: 32px;
-  padding: 20px 24px 18px;
-  border-radius: 24px;
-  background: #f9fbff;
-  border: 1px solid #e0e7ff;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
-}
-
-/* OBERER BLOCK */
-
-.filter-top {
+.filter-panel {
+  padding: 16px 14px 14px;
+  border-radius: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.field {
+.panel-title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.panel-field {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 160px;
 }
 
-.field-query {
-  flex: 1 1 260px;
-}
-
-.field-sort {
-  width: 180px;
-}
-
-.field-label {
+.panel-label {
   font-size: 12px;
   font-weight: 500;
   color: #6b7280;
 }
 
-/* Suche */
-
-.query-input {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-}
-
-.query-input input {
-  border: 0;
-  outline: 0;
-  width: 100%;
-  font-size: 14px;
-  background: transparent;
-}
-
-.query-input input::placeholder {
-  color: #9ca3af;
-}
-
-.query-input:focus-within {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
-}
-
-/* Selects & Number */
+/* Inputs / Selects */
 
 select,
 .number-input {
-  border: 1px solid #e5e7eb;
-  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 7px 9px;
   font-size: 14px;
   outline: none;
   background: #ffffff;
@@ -80,242 +42,17 @@ select,
 select:focus,
 .number-input:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
 }
-
-/* Finden-Button */
-
-.primary-btn {
-  border: 0;
-  outline: 0;
-  padding: 10px 22px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.45);
-  transition: transform 120ms ease, box-shadow 120ms ease;
-  white-space: nowrap;
-}
-
-.primary-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.55);
-}
-
-/* UNTERER BLOCK */
-
-.filter-bottom {
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  font-size: 13px;
-}
-
-.field-inline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.field-distance input[type='range'] {
-  width: 150px;
-}
-
-.sub-value {
-  font-size: 12px;
-  color: #111827;
-  min-width: 50px;
-}
-
-/* Checkbox-Styles kannst du behalten oder leicht anpassen */
-
-.chk {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #4b5563;
-}
-
-.chk input {
-  width: 16px;
-  height: 16px;
-}
-
-/* Reset-Link */
-
-.link-reset {
-  margin-left: auto;
-  border: 0;
-  background: transparent;
-  color: #2563eb;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 13px;
-  text-decoration: none;
-}
-
-.link-reset:hover {
-  text-decoration: underline;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 768px) {
-  .filter-top {
-    align-items: stretch;
-  }
-
-  .field-sort {
-    flex: 1 1 160px;
-    width: auto;
-  }
-
-  .primary-btn {
-    width: 100%;
-    justify-content: center;
-    order: 99; /* Button nach unten in der Top-Reihe */
-  }
-
-  .filter-bottom {
-    align-items: flex-start;
-  }
-
-  .link-reset {
-    margin-left: 0;
-  }
-}
-
-.field-format {
-  min-width: 180px;
-}
-
-.format-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.field-location {
-  flex: 1 1 220px;
-}
-
-.query-input--small {
-  padding: 6px 10px;
-}
-
-/* Karte hast du schon – lassen wir so wie sie ist */
-
-/* REIHE 1 */
-
-.filter-top {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: flex-end;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 180px;
-}
-
-.field-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: #6b7280;
-}
-
-.field-location {
-  flex: 1 1 260px;
-  min-width: 220px;
-}
-
-.field-sort {
-  width: 170px;
-}
-
-.primary-btn {
-  margin-left: auto;
-}
-
-/* REIHE 2 */
-
-.filter-bottom {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-}
-
-.bottom-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  flex: 1 1 auto;
-}
-
-.field-inline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.field-format {
-  min-width: 220px;
-}
-
-.format-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.field-distance {
-  min-width: 230px;
-}
-
-.field-distance input[type='range'] {
-  width: 140px;
-}
-
-.field-price {
-  min-width: 160px;
-}
-
-.sub-value {
-  font-size: 12px;
-  color: #111827;
-}
-
-/* Reset immer ganz rechts */
-
-.link-reset {
-  margin-left: auto;
-}
-
-/* bisschen Liebe für das kleine Standort-Feld */
 
 .query-input {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 10px;
-  border-radius: 999px;
+  padding: 7px 9px;
+  border-radius: 8px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #d1d5db;
 }
 
 .query-input input {
@@ -332,5 +69,92 @@ select:focus,
 
 .query-input:focus-within {
   border-color: #2563eb;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+/* Format */
+
+.format-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chk {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #374151;
+}
+
+/* Umkreis */
+
+.distance-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.distance-row input[type='range'] {
+  flex: 1 1 auto;
+}
+
+.sub-value {
+  font-size: 12px;
+  color: #111827;
+  min-width: 52px;
+}
+
+/* Footer Buttons */
+
+.panel-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.primary-btn {
+  flex: 1 1 auto;
+  border: 0;
+  outline: 0;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+.link-reset {
+  border: 0;
+  background: transparent;
+  font-size: 13px;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+/* Kleinere Screens: Panel einfach etwas breiter wirken lassen */
+
+@media (max-width: 900px) {
+  .filter-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+  }
+
+  .panel-title {
+    flex-basis: 100%;
+  }
+
+  .panel-field {
+    flex: 1 1 45%;
+  }
+
+  .panel-footer {
+    flex-basis: 100%;
+  }
 }

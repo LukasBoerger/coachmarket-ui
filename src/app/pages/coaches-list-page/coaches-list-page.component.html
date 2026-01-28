@@ -1,27 +1,47 @@
 <h1>Coaches</h1>
 
-<app-coach-filters
-  [sports]="(sportOptions$ | async) ?? []"
-  [specializations]="(specializationOptions$ | async) ?? []"
-  [initial]="{
-    sportSlug: form.value.sportSlug || null,
-    specializationSlug: form.value.specializationSlug || null,
-    remote: !!form.value.remote,
-    inPerson: !!form.value.inPerson,
-    city: form.value.city || '',
-    maxPrice: form.value.priceMax ?? null,
-    distanceKm: form.value.distanceKm ?? null,
-    sort: (form.value.sort ?? 'relevance')
-  }"
-  (search)="onSearch($event)"
-  (reset)="onReset()"
-></app-coach-filters>
+<div class="coaches-layout">
+  <aside class="filters-column">
+    <app-coach-filters
+      [sports]="(sportOptions$ | async) ?? []"
+      [specializations]="(specializationOptions$ | async) ?? []"
+      [initial]="{
+        sportSlug: form.value.sportSlug || null,
+        specializationSlug: form.value.specializationSlug || null,
+        remote: !!form.value.remote,
+        inPerson: !!form.value.inPerson,
+        city: form.value.city || '',
+        maxPrice: form.value.priceMax ?? null,
+        distanceKm: form.value.distanceKm ?? null,
+        sort: (form.value.sort ?? 'relevance')
+      }"
+      (search)="onSearch($event)"
+      (reset)="onReset()"
+    ></app-coach-filters>
+  </aside>
 
-<div class="list">
-  <div class="coach-grid">
-    <app-coach-card
-      *ngFor="let c of (coaches$ | async) ?? []"
-      [coach]="c"
-    ></app-coach-card>
-  </div>
+  <!-- Rechte Spalte: Ergebnisse -->
+  <section class="results-column">
+    <ng-container *ngIf="(coaches$ | async) as coaches">
+      <div
+        class="coach-grid"
+        *ngIf="coaches.length > 0; else noResults"
+      >
+        <app-coach-card
+          *ngFor="let c of coaches"
+          [coach]="c"
+        ></app-coach-card>
+      </div>
+    </ng-container>
+
+    <ng-template #noResults>
+      <div class="no-results">
+        <div class="no-results-title">Keine Coaches gefunden</div>
+        <p class="no-results-text">
+          Versuch es mit einer anderen Sportart oder einem größeren Umkreis –
+          oder aktiviere <strong>Remote</strong>.
+        </p>
+      </div>
+    </ng-template>
+  </section>
 </div>

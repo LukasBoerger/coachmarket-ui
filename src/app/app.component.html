@@ -1,4 +1,9 @@
-<app-navigation></app-navigation>
-<div style="margin-left: 3rem; margin-right: 3rem">
-  <router-outlet />
+<div class="app-shell">
+  <app-navigation></app-navigation>
+
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer></app-footer>
 </div>
