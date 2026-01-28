@@ -64,7 +64,7 @@
   <!-- CONTENT LAYOUT -->
   <section class="coach-layout">
     <main class="coach-main">
-      <!-- Über mich -->
+      <!-- Über Max -->
       <section class="card">
         <h2>Über {{ c.name.split(' ')[0] || 'mich' }}</h2>
         <p class="card-text" *ngIf="c.description">
@@ -86,7 +86,7 @@
         </div>
       </section>
 
-      <!-- Inhalte des Coachings -->
+      <!-- Was du von mir bekommst -->
       <section class="card">
         <h2>Was du von mir bekommst</h2>
         <ul class="list check-list">
@@ -98,52 +98,26 @@
         </ul>
       </section>
     </main>
+  </section>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar-section">
-      <div class="sidebar-label">Kontakt</div>
-
-      <!-- Hauptkontakt -->
+  <!-- Hinweise unter allen Boxen -->
+  <section class="coach-notes" *ngIf="c.pricingNote || c.supportNote">
+    <p class="note" *ngIf="c.pricingNote">
+      {{ c.pricingNote }}
+    </p>
+    <p class="note" *ngIf="c.supportNote">
+      {{ c.supportNote }}
       <a
-        *ngIf="c.primaryContactUrl"
-        class="primary-btn primary-btn-full"
-        [href]="c.primaryContactUrl"
+        *ngIf="c.supportUrl"
+        [href]="c.supportUrl"
         target="_blank"
         rel="noopener noreferrer"
       >
-        {{ c.primaryContactLabel || 'Coach kontaktieren' }}
+        Mehr erfahren
       </a>
-
-      <!-- Weitere Links, wenn vorhanden -->
-      <div class="sidebar-links" *ngIf="c.otherContacts?.length">
-        <a
-          *ngFor="let oc of c.otherContacts"
-          class="sidebar-link"
-          [href]="oc.url"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ oc.label }}
-        </a>
-      </div>
-    </div>
-
-    <div class="sidebar-section" *ngIf="c.pricingNote">
-      <div class="sidebar-hint">
-        {{ c.pricingNote }}
-      </div>
-    </div>
-
-    <div class="sidebar-section" *ngIf="c.supportNote">
-      <div class="sidebar-hint">
-        {{ c.supportNote }}
-        <a *ngIf="c.supportUrl" [href]="c.supportUrl" target="_blank" rel="noopener noreferrer">
-          Mehr erfahren
-        </a>
-      </div>
-    </div>
-
+    </p>
   </section>
+
 </div>
 
 <div *ngIf="isLoading" class="state-msg">Lade Coach…</div>
