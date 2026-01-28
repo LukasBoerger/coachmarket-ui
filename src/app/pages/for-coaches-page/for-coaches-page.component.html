@@ -1,0 +1,247 @@
+<section class="for-coaches-page">
+  <!-- Hero oben über die ganze Breite -->
+  <header class="hero">
+    <h1>Für Coaches</h1>
+    <p class="hero-subtitle">
+      Werde Teil von <strong>CoachMarktplatz</strong> und werde von deiner Zielgruppe
+      gefunden – ohne Provisionen. Alle Anfragen &amp; Zahlungen laufen direkt
+      zwischen dir und deinen Kund:innen.
+    </p>
+
+    <ul class="hero-benefits">
+      <li>Profil mit deinen Sportarten, Zielen und Formaten</li>
+      <li>Verlinkung auf Website, Instagram, Buchungsseite &amp; Spendenlink</li>
+      <li>Keine Provisionen – du bestimmst deine Preise</li>
+      <li>Projekt ist aktuell kostenlos &amp; werbefrei – Support per Spende möglich</li>
+    </ul>
+  </header>
+
+  <!-- Formular darunter, schön zentriert -->
+  <div class="form-wrapper">
+    <div class="form-card">
+      <h2>Als Coach eintragen</h2>
+      <p class="form-text">
+        Füll das Formular aus – wir prüfen deine Angaben und melden uns bei dir mit den nächsten Schritten.
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Name + Email -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="name">Name / Brand *</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              placeholder="z.B. Max Performance Coaching"
+            />
+            <div class="error" *ngIf="nameCtrl.invalid && nameCtrl.touched">
+              Bitte gib deinen Namen oder Brand an.
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="email">E-Mail *</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="deine@email.de"
+            />
+            <div class="error" *ngIf="emailCtrl.invalid && emailCtrl.touched">
+              Bitte gib eine gültige E-Mail-Adresse an.
+            </div>
+          </div>
+        </div>
+
+        <!-- Tagline -->
+        <div class="form-field">
+          <label for="tagline">Kurzbeschreibung / Claim (optional)</label>
+          <input
+            id="tagline"
+            type="text"
+            formControlName="tagline"
+            placeholder="z.B. Hyrox & Functional Coaching für ambitionierte Athlet:innen"
+          />
+        </div>
+
+        <!-- Sportarten Mehrfachauswahl -->
+        <div class="form-field">
+          <label>Sportarten / Bereiche</label>
+          <p class="field-hint">
+            Wähle die Sportarten, in denen du aktiv coachst.
+          </p>
+          <div class="multi-list">
+            <label
+              class="multi-option"
+              *ngFor="let s of (sportsOptions$ | async) ?? []"
+            >
+              <input
+                type="checkbox"
+                [checked]="form.controls.sports.value?.includes(s.value)"
+                (change)="onToggleMulti('sports', s.value, $any($event.target).checked)"
+              />
+              <span>{{ s.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Ziele Mehrfachauswahl -->
+        <div class="form-field">
+          <label>Ziele / Spezialisierungen</label>
+          <p class="field-hint">
+            Wähle, wobei du deinen Kund:innen konkret hilfst.
+          </p>
+          <div class="multi-list">
+            <label
+              class="multi-option"
+              *ngFor="let sp of (specializationOptions$ | async) ?? []"
+            >
+              <input
+                type="checkbox"
+                [checked]="form.controls.specializations.value?.includes(sp.value)"
+                (change)="onToggleMulti('specializations', sp.value, $any($event.target).checked)"
+              />
+              <span>{{ sp.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Format + Stadt -->
+        <div class="form-row">
+          <div class="form-field">
+            <label>Format</label>
+            <div class="format-column">
+              <label class="chk">
+                <input type="checkbox" formControlName="remote"/>
+                <span>Remote</span>
+              </label>
+              <label class="chk">
+                <input type="checkbox" formControlName="inPerson"/>
+                <span>Vor Ort</span>
+              </label>
+              <label class="chk">
+                <input
+                  type="checkbox"
+                  [checked]="form.controls.remoteOnly.value"
+                  (change)="onRemoteOnlyChange($any($event.target).checked)"
+                />
+                <span>Nur Remote (keine Vor-Ort-Termine)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="city">Stadt / Region</label>
+            <input
+              id="city"
+              type="text"
+              formControlName="city"
+              [disabled]="form.controls.remoteOnly.value ?? true"
+              placeholder="z.B. Münster"
+            />
+          </div>
+        </div>
+
+        <!-- Preis -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="priceFrom">Preis ab (optional)</label>
+            <div class="price-row">
+              <input
+                id="priceFrom"
+                type="number"
+                min="0"
+                formControlName="priceFrom"
+                placeholder="z.B. 99"
+              />
+              <span class="currency-label">{{ form.controls.currency.value }}</span>
+            </div>
+            <p class="field-hint">
+              Nur zur groben Orientierung – die Details klärst du direkt mit deinen Kund:innen.
+            </p>
+          </div>
+        </div>
+
+        <!-- Links -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="websiteUrl">Website</label>
+            <input
+              id="websiteUrl"
+              type="url"
+              formControlName="websiteUrl"
+              placeholder="https://deine-seite.de"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="instagramUrl">Instagram</label>
+            <input
+              id="instagramUrl"
+              type="url"
+              formControlName="instagramUrl"
+              placeholder="https://instagram.com/deinprofil"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="bookingUrl">Buchungslink (z.B. Calendly)</label>
+            <input
+              id="bookingUrl"
+              type="url"
+              formControlName="bookingUrl"
+              placeholder="https://..."
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="donationUrl">Spenden- / Support-Link</label>
+            <input
+              id="donationUrl"
+              type="url"
+              formControlName="donationUrl"
+              placeholder="z.B. Ko-fi, Patreon, Paypal.me"
+            />
+          </div>
+        </div>
+
+        <!-- Nachricht -->
+        <div class="form-field">
+          <label for="message">Noch etwas Wichtiges? (optional)</label>
+          <textarea
+            id="message"
+            rows="4"
+            formControlName="message"
+            placeholder="Besonderheiten, Zertifikate, Zielgruppe, etc."
+          ></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div class="form-footer">
+          <button
+            class="primary-btn"
+            type="submit"
+            [disabled]="submitting"
+          >
+            {{ submitting ? 'Wird gesendet…' : 'Anfrage absenden' }}
+          </button>
+
+          <div class="status" *ngIf="submitted && !error">
+            ✅ Danke! Wir melden uns bei dir per E-Mail.
+          </div>
+          <div class="status error" *ngIf="error">
+            {{ error }}
+          </div>
+        </div>
+
+        <p class="small-print">
+          Mit dem Absenden stimmst du zu, dass wir deine Angaben zur Bearbeitung
+          deiner Anfrage speichern und dich per E-Mail kontaktieren dürfen.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
