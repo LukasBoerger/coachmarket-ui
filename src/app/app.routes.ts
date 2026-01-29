@@ -3,6 +3,8 @@ import {CoachesListPageComponent} from './pages/coaches-list-page/coaches-list-p
 import {CoachDetailPageComponent} from './pages/coach-detail-page/coach-detail-page.component';
 import {ImpressumPageComponent} from './legal/impressum-page/impressum-page.component';
 import {DatenschutzPageComponent} from './legal/datenschutz-page/datenschutz-page.component';
+import {LoginPageComponent} from './pages/login-page/login-page.component';
+import {RegisterPageComponent} from './pages/register-page/register-page.component';
 
 export const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'coaches'},
@@ -15,6 +17,8 @@ export const routes: Routes = [
         (m) => m.ForCoachesPageComponent
       ),
   },
+  {path: 'login', component: LoginPageComponent},
+  {path: 'register', component: RegisterPageComponent},
   {path: 'impressum', component: ImpressumPageComponent},
   {path: 'datenschutz', component: DatenschutzPageComponent},
   {path: '**', redirectTo: 'coaches'},
