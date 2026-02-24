@@ -16,4 +16,5 @@ export interface MyCoachProfileDto {
   socialLinks?: { platform: string; url: string }[];
   status?: string;
   slug?: string;
+  avatarUrl?: string | null;
 }

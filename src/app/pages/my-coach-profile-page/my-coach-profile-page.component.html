@@ -1,0 +1,211 @@
+<div class="profile-page">
+
+  <div class="profile-header">
+    <div>
+      <h1>Mein Coach-Profil</h1>
+      <p [class.draft]="currentStatus === 'DRAFT'" [class.published]="currentStatus === 'PUBLISHED'"
+         class="status-badge">
+        {{ currentStatus === 'PUBLISHED' ? '🟢 Öffentlich sichtbar' : '⚪ Entwurf' }}
+      </p>
+    </div>
+
+    <div class="header-actions">
+      <button (click)="save()" [disabled]="isSaving" class="btn-save">
+        {{ isSaving ? 'Speichert...' : 'Speichern' }}
+      </button>
+      <button
+        (click)="publish()"
+        *ngIf="currentStatus === 'DRAFT'"
+        [disabled]="isPublishing"
+        class="btn-publish">
+        {{ isPublishing ? '...' : 'Veröffentlichen' }}
+      </button>
+      <button
+        (click)="unpublish()"
+        *ngIf="currentStatus === 'PUBLISHED'"
+        [disabled]="isPublishing"
+        class="btn-unpublish">
+        {{ isPublishing ? '...' : 'Zurück auf Entwurf' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="success-msg" *ngIf="successMsg">
+    {{ successMsg }}
+
+    <a *ngIf="currentStatus === 'PUBLISHED' && currentSlug"
+       [routerLink]="['/coaches', currentSlug]"
+       class="profile-link">
+      → Profil ansehen
+    </a>
+  </div>
+  <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+  <div *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</div>
+
+  <div *ngIf="isLoading" class="state-msg">Lade Profil…</div>
+
+  <form *ngIf="!isLoading" [formGroup]="form" class="profile-form">
+
+    <!-- Basis -->
+    <section class="card">
+      <h2>Basis-Informationen</h2>
+
+      <!-- Profilbild -->
+      <section class="card">
+        <h2>Profilbild</h2>
+
+        <div class="avatar-section">
+          <div class="avatar-preview" [ngClass]="{'avatar-placeholder': !avatarUrl}">
+            <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Profilbild"/>
+            <span *ngIf="!avatarUrl">{{ form.value.displayName?.[0] ?? '?' }}</span>
+          </div>
+
+          <div class="avatar-input-group">
+            <p class="avatar-hint">Gib die URL deines Profilbilds ein (z.B. von LinkedIn, Dropbox, etc.)</p>
+            <div class="avatar-row">
+              <input
+                type="url"
+                [(ngModel)]="avatarInput"
+                [ngModelOptions]="{standalone: true}"
+                placeholder="https://beispiel.de/mein-foto.jpg"
+                class="avatar-url-input"/>
+              <button type="button" class="btn-set-avatar" (click)="setAvatar()">
+                Speichern
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="field">
+        <label>Name / Anzeigename *</label>
+        <input formControlName="displayName" placeholder="z.B. Max Mustermann Coaching" type="text"/>
+      </div>
+
+      <div class="field">
+        <label>Bio / Beschreibung</label>
+        <textarea formControlName="bio"
+                  placeholder="Beschreibe kurz was du anbietest und für wen du der richtige Coach bist..."
+                  rows="4"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Website URL</label>
+        <input formControlName="websiteUrl" placeholder="https://deine-website.de" type="url"/>
+      </div>
+    </section>
+
+    <!-- Standort -->
+    <section class="card">
+      <h2>Standort & Format</h2>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Stadt</label>
+          <input formControlName="city" placeholder="z.B. München" type="text"/>
+        </div>
+        <div class="field">
+          <label>Bundesland</label>
+          <input formControlName="region" placeholder="z.B. Bayern" type="text"/>
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <label class="checkbox-label">
+          <input formControlName="remoteAvailable" type="checkbox"/>
+          Remote / Online
+        </label>
+        <label class="checkbox-label">
+          <input formControlName="inPersonAvailable" type="checkbox"/>
+          Vor Ort
+        </label>
+      </div>
+    </section>
+
+    <!-- Preise -->
+    <section class="card">
+      <h2>Preise</h2>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Preis ab (€)</label>
+          <input formControlName="priceMin" placeholder="z.B. 50" type="number"/>
+        </div>
+        <div class="field">
+          <label>Preis bis (€)</label>
+          <input formControlName="priceMax" placeholder="z.B. 200" type="number"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Preismodell</label>
+        <select formControlName="pricingModel">
+          <option value="HOURLY">Pro Stunde</option>
+          <option value="MONTHLY">Pro Monat</option>
+          <option value="PACKAGE">Paket</option>
+          <option value="ON_REQUEST">Auf Anfrage</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Sportarten -->
+    <section class="card">
+      <h2>Sportarten</h2>
+      <div *ngIf="sports$ | async as sports" class="tag-select">
+        <button
+          (click)="toggleSport(sport.slug)"
+          *ngFor="let sport of sports"
+          [class.selected]="hasSport(sport.slug)"
+          class="tag-option"
+          type="button">
+          {{ sport.name }}
+        </button>
+      </div>
+    </section>
+
+    <!-- Spezialisierungen -->
+    <section class="card">
+      <h2>Spezialisierungen / Ziele</h2>
+      <div *ngIf="specializations$ | async as specs" class="tag-select">
+        <button
+          (click)="toggleSpec(spec.slug)"
+          *ngFor="let spec of specs"
+          [class.selected]="hasSpec(spec.slug)"
+          class="tag-option"
+          type="button">
+          {{ spec.name }}
+        </button>
+      </div>
+    </section>
+    <!-- Social Links -->
+    <section class="card">
+      <div class="section-header">
+        <h2>Social Media & Links</h2>
+        <button type="button" class="btn-add-link" (click)="addSocialLink()">
+          + Link hinzufügen
+        </button>
+      </div>
+
+      <div class="social-link-list" [formGroup]="form">
+        <div
+          class="social-link-row"
+          *ngFor="let link of socialLinks.controls; let i = index"
+          [formGroup]="$any(link)">
+          <select formControlName="platform" class="platform-select">
+            <option *ngFor="let p of platforms" [value]="p">{{ p }}</option>
+          </select>
+          <input
+            formControlName="url"
+            type="url"
+            placeholder="https://..."
+            class="link-input"/>
+          <button type="button" class="btn-remove" (click)="removeSocialLink(i)">✕</button>
+        </div>
+
+        <p class="empty-hint" *ngIf="socialLinks.length === 0">
+          Noch keine Links hinzugefügt.
+        </p>
+      </div>
+    </section>
+  </form>
+</div>
