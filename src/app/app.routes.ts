@@ -5,6 +5,7 @@ import {ImpressumPageComponent} from './legal/impressum-page/impressum-page.comp
 import {DatenschutzPageComponent} from './legal/datenschutz-page/datenschutz-page.component';
 import {LoginPageComponent} from './pages/login-page/login-page.component';
 import {RegisterPageComponent} from './pages/register-page/register-page.component';
+import {authGuard} from './auth/auth.guard';
 
 export const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'coaches'},
@@ -19,6 +20,14 @@ export const routes: Routes = [
   },
   {path: 'login', component: LoginPageComponent},
   {path: 'register', component: RegisterPageComponent},
+  {
+    path: 'my/coach-profile',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/my-coach-profile-page/my-coach-profile-page.component').then(
+        (m) => m.MyCoachProfilePageComponent
+      ),
+  },
   {path: 'impressum', component: ImpressumPageComponent},
   {path: 'datenschutz', component: DatenschutzPageComponent},
   {path: '**', redirectTo: 'coaches'},

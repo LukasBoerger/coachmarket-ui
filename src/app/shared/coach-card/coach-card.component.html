@@ -1,12 +1,12 @@
 <a
-  class="coach-card"
   [routerLink]="['/coaches', coach.slug]"
+  class="coach-card"
 >
   <div class="card-layout">
     <!-- Avatar -->
     <div class="avatar-wrapper">
-      <div class="avatar" [ngClass]="{ 'avatar-placeholder': !coach.avatarUrl }">
-        <img *ngIf="coach.avatarUrl" [src]="coach.avatarUrl" [alt]="coach.name"/>
+      <div [ngClass]="{ 'avatar-placeholder': !coach.avatarUrl }" class="avatar">
+        <img *ngIf="coach.avatarUrl" [alt]="coach.name" [src]="coach.avatarUrl"/>
         <span *ngIf="!coach.avatarUrl">
           {{ coach.name ? coach.name[0] : '?' }}
         </span>
@@ -22,18 +22,18 @@
 
           <div class="meta-row">
             <span
-              class="pill pill-location"
               *ngIf="coach.city"
+              class="pill pill-location"
             >
               📍 {{ coach.city }}
             </span>
 
-            <span class="pill" *ngIf="coach.remoteAvailable">Remote</span>
-            <span class="pill" *ngIf="coach.inPersonAvailable">Vor Ort</span>
+            <span *ngIf="coach.remoteAvailable" class="pill">Remote</span>
+            <span *ngIf="coach.inPersonAvailable" class="pill">Vor Ort</span>
           </div>
         </div>
 
-        <div class="price-block" *ngIf="coach.priceFrom">
+        <div *ngIf="coach.priceFrom" class="price-block">
           <div class="price-main">{{ coach.priceFrom }} €</div>
           <div class="price-sub">
             ab Preis
@@ -48,24 +48,24 @@
       </div>
 
       <!-- Tagline -->
-      <p class="tagline" *ngIf="coach.tagline">
+      <p *ngIf="coach.tagline" class="tagline">
         {{ coach.tagline }}
       </p>
 
       <!-- Footer: Tags + CTA -->
       <div class="card-footer">
-        <div class="tags" *ngIf="coach.sports?.length || coach.specializations?.length">
-          <span class="tag tag-main" *ngFor="let sport of coach.sports | slice:0:1">
-            {{ sport }}
-          </span>
-          <span class="tag tag-secondary" *ngFor="let spec of coach.specializations | slice:0:2">
-            {{ spec }}
-          </span>
+        <div *ngIf="coach.sports?.length || coach.specializations?.length" class="tags">
+  <span *ngFor="let sport of coach.sports | slice:0:1" class="tag tag-main">
+    {{ sport }}
+  </span>
+          <span *ngFor="let spec of coach.specializations | slice:0:2" class="tag tag-secondary">
+    {{ spec }}
+  </span>
         </div>
 
-        <span class="cta-link">
-          Profil ansehen
-        </span>
+        <span class="cta-btn">
+  Profil ansehen →
+</span>
       </div>
     </div>
   </div>

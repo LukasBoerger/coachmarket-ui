@@ -1,86 +1,77 @@
-<mat-toolbar color="primary" class="nav-toolbar">
-  <span class="logo">CoachMarktplatz</span>
+<nav class="navbar">
+  <div class="nav-inner">
 
-  <span class="spacer"></span>
+    <!-- Logo -->
+    <a class="logo" routerLink="/">CoachMarktplatz</a>
 
-  <!-- DESKTOP NAVIGATION -->
-  <div class="desktop-nav">
-    <ng-container *ngFor="let item of navItems">
-      <!-- Normaler Link -->
-      <button
-        *ngIf="!item.children"
-        mat-button
-        [routerLink]="item.route"
-        routerLinkActive="active-link"
-      >
-        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-        {{ item.label }}
-      </button>
+    <!-- Desktop Links -->
+    <div class="desktop-nav">
+      <a class="nav-link" routerLink="/coaches" routerLinkActive="active">
+        Coaches finden
+      </a>
 
-      <!-- Dropdown -->
-      <button
-        *ngIf="item.children"
-        mat-button
-        [matMenuTriggerFor]="menu"
-      >
-        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-        {{ item.label }}
-      </button>
-
-      <mat-menu #menu="matMenu">
-        <button
-          mat-menu-item
-          *ngFor="let child of item.children"
-          [routerLink]="child.route"
-        >
-          <mat-icon *ngIf="child.icon">{{ child.icon }}</mat-icon>
-          {{ child.label }}
+      <div class="nav-dropdown">
+        <button class="nav-link dropdown-trigger">
+          Sportarten <span class="chevron">▾</span>
         </button>
-      </mat-menu>
-    </ng-container>
-  </div>
+        <div class="dropdown-menu">
+          <a [queryParams]="{sportSlug: 'fitness'}" class="dropdown-item" routerLink="/coaches">Fitness</a>
+          <a [queryParams]="{sportSlug: 'bodybuilding'}" class="dropdown-item" routerLink="/coaches">Bodybuilding</a>
+          <a [queryParams]="{sportSlug: 'laufen'}" class="dropdown-item" routerLink="/coaches">Laufen</a>
+          <a [queryParams]="{sportSlug: 'crossfit'}" class="dropdown-item" routerLink="/coaches">Hyrox / Functional</a>
+          <a [queryParams]="{sportSlug: 'handball'}" class="dropdown-item" routerLink="/coaches">Handball</a>
+        </div>
+      </div>
 
-  <!-- MOBILE BURGER BUTTON -->
-  <button
-    class="mobile-menu-button"
-    mat-icon-button
-    [matMenuTriggerFor]="mobileMenu"
-    aria-label="Navigation öffnen"
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
-</mat-toolbar>
+      <div class="nav-dropdown">
+        <button class="nav-link dropdown-trigger">
+          Für Coaches <span class="chevron">▾</span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/for-coaches">Coach werden</a>
+          <a class="dropdown-item" routerLink="/for-coaches">So funktioniert's</a>
+        </div>
+      </div>
 
-<!-- MOBILE MENU-INHALT -->
-<mat-menu #mobileMenu="matMenu">
-  <ng-container *ngFor="let item of navItems">
-    <!-- einfache Links -->
-    <button
-      mat-menu-item
-      *ngIf="!item.children"
-      [routerLink]="item.route"
-    >
-      <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-      <span>{{ item.label }}</span>
+      <a class="nav-link" routerLink="/wissen" routerLinkActive="active">Wissen</a>
+    </div>
+
+    <!-- CTA: nicht eingeloggt -->
+    <div *ngIf="!(user$ | async)" class="nav-actions">
+      <a class="btn-login" routerLink="/login">Anmelden</a>
+      <a class="btn-register" routerLink="/register">Als Coach eintragen</a>
+    </div>
+
+    <!-- CTA: eingeloggt -->
+    <div *ngIf="user$ | async" class="nav-actions">
+      <a class="btn-login" routerLink="/my/coach-profile">Mein Profil</a>
+      <button (click)="logout()" class="btn-logout">Abmelden</button>
+    </div>
+
+    <!-- Mobile Burger -->
+    <button (click)="mobileOpen = !mobileOpen" class="burger">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
 
-    <!-- Gruppen mit Kindern -->
-    <ng-container *ngIf="item.children">
-      <button mat-menu-item disabled>
-        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-        <span>{{ item.label }}</span>
-      </button>
+  </div>
 
-      <button
-        mat-menu-item
-        *ngFor="let child of item.children"
-        [routerLink]="child.route"
-      >
-        <span class="child-dot">•</span>
-        <span>{{ child.label }}</span>
-      </button>
+  <!-- Mobile Menu -->
+  <div [class.open]="mobileOpen" class="mobile-menu">
+    <a (click)="mobileOpen = false" class="mobile-link" routerLink="/coaches">Coaches finden</a>
+    <a (click)="mobileOpen = false" class="mobile-link" routerLink="/for-coaches">Für Coaches</a>
+    <a (click)="mobileOpen = false" class="mobile-link" routerLink="/wissen">Wissen</a>
+    <hr class="mobile-divider">
 
-      <mat-divider></mat-divider>
+    <ng-container *ngIf="!(user$ | async)">
+      <a (click)="mobileOpen = false" class="mobile-link" routerLink="/login">Anmelden</a>
+      <a (click)="mobileOpen = false" class="mobile-link mobile-register" routerLink="/register">Als Coach eintragen</a>
     </ng-container>
-  </ng-container>
-</mat-menu>
+
+    <ng-container *ngIf="user$ | async">
+      <a (click)="mobileOpen = false" class="mobile-link" routerLink="/my/coach-profile">Mein Profil</a>
+      <button (click)="logout(); mobileOpen = false" class="mobile-link mobile-logout">Abmelden</button>
+    </ng-container>
+  </div>
+</nav>

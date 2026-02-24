@@ -8,9 +8,10 @@ import {CoachesService} from '../../api/coaches.service';
 import {SportsService} from '../../api/sports.service';
 import {SpecializationsService} from '../../api/specializations.service';
 import {CoachFiltersComponent} from '../../shared/coach-filters/coach-filters.component';
-
 import {CoachCardComponent} from '../../shared/coach-card/coach-card.component';
 import {CoachCardVm} from '../../shared/coach-card/coach-card.model';
+import {CoachDto} from '../../api/models';
+import {formatPricingModel} from '../../shared/utils/pricing.utils';
 
 type Option = { label: string; value: string };
 
@@ -29,24 +30,20 @@ type Option = { label: string; value: string };
 })
 export class CoachesListPageComponent {
   private fb = inject(FormBuilder);
-  private coachesApi = inject(CoachesService);
   private sportsApi = inject(SportsService);
+  private coachesApi = inject(CoachesService);
   private specsApi = inject(SpecializationsService);
+  private refreshTick = this.fb.control(0);
 
-  // Rohdaten
   sports$ = this.sportsApi.list().pipe(shareReplay(1));
   specializations$ = this.specsApi.list().pipe(shareReplay(1));
 
-  // Optionen für Filter-Component
   sportOptions$ = this.sports$.pipe(
     map((sports) => sports.map((s: any) => ({label: s.name, value: s.slug}) as Option))
   );
-
   specializationOptions$ = this.specializations$.pipe(
     map((specs) => specs.map((sp: any) => ({label: sp.name, value: sp.slug}) as Option))
   );
-
-  // Page-Form bleibt Single Source of Truth
   form = this.fb.group({
     sportSlug: [''],
     specializationSlug: [''],
@@ -58,9 +55,6 @@ export class CoachesListPageComponent {
     sort: ['relevance' as 'relevance' | 'priceAsc' | 'priceDesc' | 'nameAsc'],
   });
 
-  private refreshTick = this.fb.control(0);
-
-  // 👉 jetzt Observable von CoachCardVm[]
   coaches$ = combineLatest([
     this.form.valueChanges.pipe(startWith(this.form.getRawValue())),
     this.refreshTick.valueChanges.pipe(startWith(0)),
@@ -73,13 +67,11 @@ export class CoachesListPageComponent {
         inPerson: value.inPerson ? true : null,
         city: value.city?.trim() || null,
         priceMax: value.priceMax ?? null,
-        // distanceKm / sort kannst du ans Backend hängen, sobald es unterstützt wird
       })
     ),
-    map((dtos: any[]) => dtos.map((dto) => this.mapToCoachCardVm(dto)))
+    map((dtos: CoachDto[]) => dtos.map((dto) => this.mapToCoachCardVm(dto)))
   );
 
-  // ✅ Wird von der Filter-Component aufgerufen
   onSearch(filters: {
     sportSlug: string | null;
     specializationSlug: string | null;
@@ -100,11 +92,9 @@ export class CoachesListPageComponent {
       distanceKm: filters.distanceKm ?? null,
       sort: filters.sort,
     });
-
     this.search();
   }
 
-  // ✅ Reset aus Filter-Component
   onReset() {
     this.form.reset({
       sportSlug: '',
@@ -123,28 +113,20 @@ export class CoachesListPageComponent {
     this.refreshTick.setValue((this.refreshTick.value ?? 0) + 1);
   }
 
-  // 🔁 Mapping Backend → Card-ViewModel
-  private mapToCoachCardVm(dto: any): CoachCardVm {
+  private mapToCoachCardVm(dto: CoachDto): CoachCardVm {
     return {
       slug: dto.slug,
-
-      name: dto.displayName ?? dto.name ?? '',
+      name: dto.displayName,
       city: dto.city ?? '',
-      tagline: dto.tagline ?? dto.shortDescription ?? '',
+      tagline: dto.bio?.substring(0, 100) ?? '',
+      avatarUrl: dto.avatarUrl ?? undefined,
+      sports: dto.sports?.map(s => s.name) ?? [],
+      specializations: dto.specializations?.map(s => s.name) ?? [],
+      remoteAvailable: dto.remoteAvailable,
+      inPersonAvailable: dto.inPersonAvailable,
+      priceFrom: dto.priceMin ?? undefined,
+      priceUnit: formatPricingModel(dto.pricingModel) ?? undefined,
 
-      avatarUrl: dto.avatarUrl ?? null,
-
-      sports: dto.sports ?? [],
-      specializations: dto.specializations ?? [],
-
-      remoteAvailable: !!dto.remoteAvailable,
-      inPersonAvailable: !!dto.inPersonAvailable,
-
-      priceFrom:
-        dto.priceMin !== null && dto.priceMin !== undefined
-          ? dto.priceMin
-          : undefined,
-      priceUnit: dto.currency ?? undefined,
     };
   }
 }

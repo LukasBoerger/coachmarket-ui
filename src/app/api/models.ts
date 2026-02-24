@@ -10,6 +10,21 @@ export type SpecializationDto = {
   slug: string;
 };
 
+export type SocialLinkDto = {
+  platform: string;
+  url: string;
+};
+
+export type SportRefDto = {
+  slug: string;
+  name: string;
+};
+
+export type SpecializationRefDto = {
+  slug: string;
+  name: string;
+};
+
 export type CoachDto = {
   id: string;
   displayName: string;
@@ -17,12 +32,18 @@ export type CoachDto = {
   bio: string | null;
   websiteUrl: string | null;
   city: string | null;
+  region: string | null;
+  country: string | null;
   remoteAvailable: boolean;
   inPersonAvailable: boolean;
   priceMin: number | null;
   priceMax: number | null;
+  pricingModel: string | null;
   currency: string;
   status: string;
   avatarUrl?: string | null;
   imageUrls?: string[];
+  sports: SportRefDto[];
+  specializations: SpecializationRefDto[];
+  socialLinks: SocialLinkDto[];
 };

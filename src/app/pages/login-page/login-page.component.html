@@ -1,5 +1,29 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <input formControlName="email" type="email" placeholder="E-Mail">
-  <input formControlName="password" type="password" placeholder="Passwort">
-  <button type="submit">Login</button>
-</form>
+<div class="auth-page">
+  <div class="auth-card">
+    <h1 class="auth-title">Willkommen zurück</h1>
+    <p class="auth-subtitle">Melde dich mit deiner E-Mail an</p>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" class="auth-form">
+      <div class="field">
+        <label>E-Mail</label>
+        <input formControlName="email" placeholder="deine@email.de" type="email"/>
+      </div>
+
+      <div class="field">
+        <label>Passwort</label>
+        <input formControlName="password" placeholder="••••••••" type="password"/>
+      </div>
+
+      <div *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</div>
+
+      <button [disabled]="loading" class="btn-primary" type="submit">
+        {{ loading ? 'Wird geladen...' : 'Anmelden' }}
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Noch kein Konto?
+      <a routerLink="/register">Jetzt registrieren</a>
+    </p>
+  </div>
+</div>
