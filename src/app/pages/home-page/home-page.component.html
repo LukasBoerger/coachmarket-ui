@@ -1,0 +1,101 @@
+<div class="home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">🏅 Der Marktplatz für Sport-Coaches</div>
+      <h1 class="hero-title">
+        Finde deinen<br>
+        <span class="hero-highlight">perfekten Coach</span>
+      </h1>
+      <p class="hero-subtitle">
+        Laufcoach, Personal Trainer, Hyrox-Spezialist – finde den Coach der zu deinen Zielen passt.
+      </p>
+
+      <div class="hero-search">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Stadt oder PLZ eingeben..."
+          (keyup.enter)="search()"
+          class="search-input"/>
+        <button class="search-btn" (click)="search()">Coaches finden</button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Coaches</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">10+</span>
+          <span class="stat-label">Sportarten</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Kostenlos suchen</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPORTARTEN -->
+  <section class="section sports-section">
+    <div class="section-inner">
+      <h2 class="section-title">Nach Sportart suchen</h2>
+      <div class="sports-grid">
+        <button
+          *ngFor="let sport of sports"
+          class="sport-card"
+          (click)="goToSport(sport.slug)">
+          <span class="sport-icon">{{ sport.icon }}</span>
+          <span class="sport-label">{{ sport.label }}</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WIE ES FUNKTIONIERT -->
+  <section class="section how-section">
+    <div class="section-inner">
+      <h2 class="section-title">So funktioniert's</h2>
+      <div class="steps-grid">
+        <div class="step-card" *ngFor="let step of steps">
+          <div class="step-num">{{ step.num }}</div>
+          <h3 class="step-title">{{ step.title }}</h3>
+          <p class="step-desc">{{ step.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED COACHES -->
+  <section class="section coaches-section" *ngIf="featuredCoaches.length > 0">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">Coaches entdecken</h2>
+        <a routerLink="/coaches" class="see-all">Alle anzeigen →</a>
+      </div>
+      <div class="coaches-grid">
+        <app-coach-card
+          *ngFor="let coach of featuredCoaches"
+          [coach]="coach">
+        </app-coach-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FÜR COACHES -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2 class="cta-title">Du bist Coach?</h2>
+      <p class="cta-subtitle">
+        Trage dich kostenlos ein und werde von Athleten in deiner Region gefunden.
+      </p>
+      <a routerLink="/register" class="cta-btn">Jetzt eintragen</a>
+    </div>
+  </section>
+
+</div>

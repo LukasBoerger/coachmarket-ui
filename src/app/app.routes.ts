@@ -6,9 +6,10 @@ import {DatenschutzPageComponent} from './legal/datenschutz-page/datenschutz-pag
 import {LoginPageComponent} from './pages/login-page/login-page.component';
 import {RegisterPageComponent} from './pages/register-page/register-page.component';
 import {authGuard} from './auth/auth.guard';
+import {HomePageComponent} from './pages/home-page/home-page.component';
 
 export const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'coaches'},
+  {path: '', pathMatch: 'full', component: HomePageComponent},
   {path: 'coaches', component: CoachesListPageComponent},
   {path: 'coaches/:slug', component: CoachDetailPageComponent},
   {

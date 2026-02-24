@@ -163,20 +163,6 @@
       </div>
     </section>
 
-    <!-- Spezialisierungen -->
-    <section class="card">
-      <h2>Spezialisierungen / Ziele</h2>
-      <div *ngIf="specializations$ | async as specs" class="tag-select">
-        <button
-          (click)="toggleSpec(spec.slug)"
-          *ngFor="let spec of specs"
-          [class.selected]="hasSpec(spec.slug)"
-          class="tag-option"
-          type="button">
-          {{ spec.name }}
-        </button>
-      </div>
-    </section>
     <!-- Social Links -->
     <section class="card">
       <div class="section-header">

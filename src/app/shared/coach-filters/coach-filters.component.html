@@ -13,20 +13,6 @@
     </select>
   </div>
 
-  <!-- Ziel -->
-  <div class="panel-field">
-    <label class="panel-label">Ziel</label>
-    <select
-      [value]="form.controls.specializationSlug.value ?? ''"
-      (change)="form.controls.specializationSlug.setValue($any($event.target).value || null)"
-    >
-      <option value="">Alle Ziele</option>
-      <option *ngFor="let sp of specializations" [value]="sp.value">
-        {{ sp.label }}
-      </option>
-    </select>
-  </div>
-
   <!-- Standort -->
   <div class="panel-field">
     <label class="panel-label">Standort</label>
@@ -53,7 +39,6 @@
         />
         <span>Remote</span>
       </label>
-
       <label class="chk">
         <input
           type="checkbox"
@@ -117,7 +102,7 @@
     </select>
   </div>
 
-  <!-- Footer: Buttons -->
+  <!-- Footer -->
   <div class="panel-footer">
     <button class="primary-btn" type="button" (click)="onSearch()">
       Filter anwenden

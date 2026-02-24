@@ -4,7 +4,6 @@
   <aside class="filters-column">
     <app-coach-filters
       [sports]="(sportOptions$ | async) ?? []"
-      [specializations]="(specializationOptions$ | async) ?? []"
       [initial]="{
         sportSlug: form.value.sportSlug || null,
         specializationSlug: form.value.specializationSlug || null,
